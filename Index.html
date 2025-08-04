@@ -419,8 +419,97 @@
         .hover\:bg-violet-700:hover {
             background-color: #6d28d9;
         }
+
+        /* DealerAmigo Chat Widget */
+        #dealeramigo-widget {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+            font-family: Arial, sans-serif;
+        }
+        #dealeramigo-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            padding: 20px 24px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            animation: floatAround 4s ease-in-out infinite;
+            position: relative;
+        }
+        #dealeramigo-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.8);
+        }
+        #dealeramigo-button::before {
+            content: '💬';
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        @keyframes floatAround {
+            0% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+            25% { 
+                transform: translateY(-15px) translateX(10px) rotate(2deg);
+            }
+            50% { 
+                transform: translateY(-8px) translateX(-8px) rotate(-1deg);
+            }
+            75% { 
+                transform: translateY(-20px) translateX(5px) rotate(1deg);
+            }
+            100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+        }
+        #dealeramigo-chat {
+            display: none;
+            flex-direction: column;
+            width: 300px;
+            height: 400px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        #dealeramigo-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        #dealeramigo-input {
+            display: flex;
+            border-top: 1px solid #eee;
+        }
+        #dealeramigo-input input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 0;
+            outline: none;
+        }
+        #dealeramigo-input button {
+            padding: 8px 12px;
+            background: #6e00ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
+<body>
 <body>
     <header>
         <div class="container">
@@ -614,6 +703,18 @@
         📞
     </a>
 
+    <!-- DealerAmigo Chat Widget -->
+    <div id="dealeramigo-widget">
+        <div id="dealeramigo-chat">
+            <div id="dealeramigo-messages"></div>
+            <div id="dealeramigo-input">
+                <input type="text" id="dealeramigo-userinput" placeholder="Escribe algo..." />
+                <button onclick="sendDealerAmigo()">Enviar</button>
+            </div>
+        </div>
+        <button id="dealeramigo-button" onclick="toggleDealerAmigo()">💬 ¿Buscas tu próximo carro?</button>
+    </div>
+
     <script>
         // Smooth scrolling para los enlaces internos
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -641,10 +742,21 @@
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
         });
-    </script>
-    script src="https://tuservidor.com/dealeramigo-widget.js" 
-        data-industry="automotive" 
-        data-business="DealerAmiGo">
-</script>
+
+        // DealerAmigo Widget Functions
+        function toggleDealerAmigo() {
+            const chat = document.getElementById("dealeramigo-chat");
+            chat.style.display = chat.style.display === "flex" ? "none" : "flex";
+        }
+        
+        function appendDealerMessage(text, isBot = false) {
+            const messagesDiv = document.getElementById("dealeramigo-messages");
+            const msg = document.createElement("div");
+            msg.style.margin = "8px 0";
+            msg.style.textAlign = isBot ? "left" : "right";
+            msg.innerText = text;
+            messagesDiv.appendChild(msg);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        
 </body>
 </html>
